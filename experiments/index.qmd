@@ -1,0 +1,280 @@
+---
+title: "Guest lecture: Experiments"
+author: "Damon C. Roberts, University of Colorado"
+format:
+  revealjs: 
+    embed-resources: true
+    theme: [dark, custom.scss]
+    transition: slide
+    incremental: true
+    scrollable: true
+    slide-number: true
+    toc: true
+    toc-depth: 1
+    slide-level: 3
+    bibliography: assets/references.bib
+---
+
+```{r}
+#| label: setup-block
+#| echo: false
+#| eval: true
+box::use(
+    magrittr[`%>%`],
+    dplyr[select, rename, filter, mutate, case_when],
+    modelsummary[datasummary_crosstab],
+)
+# Load data
+waffles <- read.csv(file = "assets/waffles.csv", sep = ";")
+```
+
+```{r}
+#| label: cleaning
+#| echo: false
+#| eval: true
+waffle_cat <- waffles %>%
+    mutate(
+        WaffleHouses_Binary = ifelse(WaffleHouses > 0, 1, 0),
+        WaffleHouses_Cat = factor(
+            WaffleHouses_Binary,
+            labels = c(
+                "No",
+                "Yes"
+            ),
+            ordered = TRUE
+        ),
+        Age = case_when(
+            MedianAgeMarriage >= 18.0 & MedianAgeMarriage <= 20.0 ~ 1.0,
+            MedianAgeMarriage >= 20.1 & MedianAgeMarriage <= 22.0 ~ 2.0,
+            MedianAgeMarriage >= 22.1 & MedianAgeMarriage <= 24.0 ~ 3.0,
+            MedianAgeMarriage >= 24.1 & MedianAgeMarriage <= 26.0 ~ 4.0,
+            MedianAgeMarriage >= 26.1 & MedianAgeMarriage <= 28.0 ~ 5.0,
+            MedianAgeMarriage >= 28.1 ~ 6.0
+        ),
+        Age_Cat = factor(
+            Age,
+            labels = c(
+                "22-24",
+                "24-26",
+                "26-28",
+                "28+"
+            ),
+            ordered = TRUE
+        ),
+        Divorce_Norm = scale(Divorce)[,1],
+        Divorce_Cat = case_when(
+            Divorce_Norm < -1 ~ -2.0,
+            Divorce_Norm >= -1 & Divorce_Norm < 0 ~ -1.0,
+            Divorce_Norm == 0 ~ 0,
+            Divorce_Norm > 0 & Divorce_Norm <= 1 ~ 1.0,
+            Divorce_Norm > 1 ~ 2.0
+        ),
+        Divorce_Cat_Labelled = factor(
+            Divorce_Cat,
+            labels = c(
+                "Much lower than average",
+                "Lower than average",
+                "Higher than average",
+                "Much Higher than average"
+            ),
+            ordered = TRUE
+        )
+    )
+```
+# Who am I?
+
+---
+
+- PhD Candidate at CU
+
+---
+
+- Specializes in:
+    - Political psychology
+        - Often in the context of the United States
+    - Political neuroscience
+    - Applied Statistics
+        - Experiments
+        - Surveys
+        - Bayesian Statistics
+        - Missing data problems
+
+::: footer
+<span class="faux-block">{{< fa brands creative-commons >}} 2021-2023 Damon Charles Roberts</span>
+<span class="faux-block"><br>All content licensed under {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>
+:::
+
+# Motivations for using experiments
+
+## Causal inference
+
+- Often in science we engage in causal inference.
+    - We do not want to just examine whether there is a `correlation` between two variables, but we often want to to examine the `causal` relationship.
+
+### Correlational relationships
+
+- Two variables may be related, but the relationship may just be spurious.
+
+---
+
+```{r}
+#| label: tbl-cleaned-crosstab
+#| tbl-cap: Cross tabulation
+#| echo: false
+waffle_cat %>% # use the waffles_cat dataset...
+    datasummary_crosstab( # ... with the dataset, create a crosstab
+        WaffleHouses_Cat ~ Divorce_Cat_Labelled, #... and use the two cleaned variables
+        notes = "Data source: Waffles dataset (McElreath 2020).\n Credit: damoncroberts.com", # add notes to table
+        data = . # and use the dataset connected by the pipe operator
+    )
+```
+
+---
+
+![Nicholas Cage films](assets/nic_cage_correlation.jpeg)
+
+---
+
+![Arcades](assets/arcade_correlation.jpeg)
+
+### Causal relationships
+
+- Variables causing some outcome
+
+---
+
+```{mermaid}
+%%| label: fig-simple-hypothesis
+%%| fig-cap: Simple causal relationship
+%%| fig-width: 10
+%%{init: {'theme':'dark', 'themeVariables':{'primaryColor':'#000000', 'primaryBorderColor': '#fffffff'}}}%%
+graph LR
+A["☀️"] --> B["🌡️"] 
+```
+
+---
+
+- However, detecting causal relationships is quite complicated!
+
+---
+
+```{mermaid}
+%%| label: fig-confounded-hypothesis
+%%| fig-cap: Confounded hypothesis
+%%| fig-width: 10
+%%{init: {'theme':'dark', 'themeVariables':{'primaryColor':'#000000', 'primaryBorderColor': '#fffffff'}}}%%
+graph LR
+A["☀️"] --> B["🌡️"]
+C["☁️"] --> A
+C --> B
+```
+
+---
+
+- In science we are often interested in isolating the effect of a primary independent variable on a dependent variable.
+    - There are often two primary strategies we can try to do this with.
+
+## Internal versus external validity
+
+### Internal validity
+- Changes in your dependent variable are not caused by anything but your independent variable.
+- There is not omitted variable bias (a confounding variable you have not controlled for).
+- Often comes with experimental designs
+    - Only one thing changes in the environment, so any change that occurs in your dependent variable is likely because of what you changed in the environment.
+
+### External validity
+- Changes in your dependent variable can be caused by multiple factors.
+- Beneficial in that this is more realistic.
+    - It is rarely the case that only *one* thing influences your dependent variable and only one thing changes at a time.
+- Often comes with observational designs
+    - You just observe what is happening in the world and collect data on it. Changes that occur in your outcome are not "artificial" and are happening in the real world.
+
+---
+
+- Often times there is some trade-off between these.
+    - If we choose a design that is highly internally valid, we have less external validity. And vice versa.
+
+# Experiments
+
+## How do they work?
+
+- We need to define the main independent variable of interest that we think explains our dependent variable.
+
+---
+
+- We can control the environment someone is in and will only allow for the independent variable to change.
+    - We often randomly assign people into different values of the independent variable
+- In the context of an experiment, this independent variable that we manipulate is called a treatment.
+- In many cases: treatment $\neq$ independent variable
+    - For example: if party identification is our treatment, we often cannot change someone's partisanship in a lab very easily! We can get close by changing motivations to rely on their partisanship, though.
+    - This is often one way that experiments are low on external validity.
+- It increases internal validity by: making sure that the only thing changing is the treatment and then looking at how the dependent variable changes as a result. It ensures that we don't all of the real world noise going on around this.
+
+## A simple example of how an experiment works
+
+---
+
+- Participants come into a lab
+- They fill out some paperwork that ensures they know their rights and lets them know what to expect from the experience
+- Half of the participants are randomly assigned to take a sugar pill (a placebo), the second is randomly chosen to take the anti-depressant
+- Participants do not know what "treatment" they are being given. Neither do the researchers. Which "treatment condition" someone is assigned to is entirely random.
+- The researchers then document how everyone's rates of depression changes after taking one of the two pills.
+
+## A political science example of how an experiment works
+
+- From @roberts_wolak_2022_pb.
+- A researcher wants to examine whether people are more likely to vote for younger candidates relative to older political candidates
+
+---
+
+- Treatment:
+    - Placebo condition: the candidate is described as 50 years old (roughly the average age of a member of office)
+    - Young condition: the candidate is described as 25 years old
+    - Old condition: the candidate is described as 75 years old 
+
+---
+
+### Placebo condition
+
+>Jack Milhone is running for the state legislature in 2020.  Milhone is a *50-year-old* resident of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *The average age of lawmakers in the state legislature is 52.*^[*Italics* represent what is different between conditions.]
+
+---
+
+### Young condition
+
+> Jack Milhone is running for the state legislature in 2020.  Milhone is a *23-year-old* resident of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state.Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *If elected, Milhone will be the youngest lawmaker in the state legislature.*^[*Italics* represent what is different between conditions.]
+
+---
+
+### Old condition
+
+> Jack Milhone is running for the state legislature in 2020.  Milhone is a *77-year-old resident* of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *If elected, Milhone will be the oldest lawmaker in the state legislature.*^[*Italics* represent what is different between conditions.]
+
+---
+
+- People are randomly assigned to see one of these three things.
+- They only see one of them.
+
+---
+
+- They are then asked an operationalized measure of willingness to vote for the candidate:
+
+> Imagine that you live in the state where Jack Milhone is running for state legislator. How likely is it that you would vote for him in the upcoming election? 0 Very unlikely, 100 Very likely
+
+## Dissertation example
+
+- Experiments allow you to get really creative!
+- They aren't just used using what are called "vignettes" like the example above!
+
+---
+
+- In this study, I am trying to test the following hypotheses:
+    1. People notice color
+    2. Colors shape the perceptions of candidates based on partisan perceptions.
+    3. Candidates using Red are more supported by Republicans; candidates using Blue are more supported by Democrats.
+    4. Republicans spend less time coming to evaluations of candidates using Red; Democrats spend less time evaluating candidates using Blue.
+
+# References
+
+:::{#refs}
+:::
