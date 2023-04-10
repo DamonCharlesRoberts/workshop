@@ -13,6 +13,57 @@ format:
     toc-depth: 1
     slide-level: 3
     bibliography: assets/references.bib
+    footer: |
+        <span class="faux-block">{{< fa brands creative-commons >}} 2021-2023 Damon Charles Roberts</span>
+        <span class="faux-block"><br>All content licensed under {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>
+---
+
+# Who am I?
+
+::: footer
+:::
+
+---
+
+-   PhD Candidate at CU
+
+::: footer
+:::
+---
+
+-   Specializes in:
+    -   Political psychology
+        -   Often in the context of the United States
+    -   Political neuroscience
+    -   Applied Statistics
+        -   Experiments
+        -   Surveys
+        -   Bayesian Statistics
+        -   Missing data problems
+
+::: footer
+:::
+
+# Motivations for using experiments
+
+::: footer
+:::
+
+## Causal inference
+
+-   Often in science we engage in causal inference.
+    -   We do not want to just examine whether there is a `correlation` between two variables, but we often want to to examine the `causal` relationship.
+
+::: footer
+:::
+
+### Correlational relationships
+
+-   Two variables may be related, but the relationship may just be spurious.
+
+::: footer
+:::
+
 ---
 
 ```{r}
@@ -81,41 +132,6 @@ waffle_cat <- waffles %>%
         )
     )
 ```
-# Who am I?
-
----
-
-- PhD Candidate at CU
-
----
-
-- Specializes in:
-    - Political psychology
-        - Often in the context of the United States
-    - Political neuroscience
-    - Applied Statistics
-        - Experiments
-        - Surveys
-        - Bayesian Statistics
-        - Missing data problems
-
-::: footer
-<span class="faux-block">{{< fa brands creative-commons >}} 2021-2023 Damon Charles Roberts</span>
-<span class="faux-block"><br>All content licensed under {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} [Creative Commons CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>
-:::
-
-# Motivations for using experiments
-
-## Causal inference
-
-- Often in science we engage in causal inference.
-    - We do not want to just examine whether there is a `correlation` between two variables, but we often want to to examine the `causal` relationship.
-
-### Correlational relationships
-
-- Two variables may be related, but the relationship may just be spurious.
-
----
 
 ```{r}
 #| label: tbl-cleaned-crosstab
@@ -129,17 +145,29 @@ waffle_cat %>% # use the waffles_cat dataset...
     )
 ```
 
+::: footer
+:::
+
 ---
 
 ![Nicholas Cage films](assets/nic_cage_correlation.jpeg)
+
+::: footer
+:::
 
 ---
 
 ![Arcades](assets/arcade_correlation.jpeg)
 
+::: footer
+:::
+
 ### Causal relationships
 
-- Variables causing some outcome
+-   Variables causing some outcome
+
+::: footer
+:::
 
 ---
 
@@ -152,9 +180,15 @@ graph LR
 A["☀️"] --> B["🌡️"] 
 ```
 
+::: footer
+:::
+
 ---
 
-- However, detecting causal relationships is quite complicated!
+-   However, detecting causal relationships is quite complicated!
+
+::: footer
+:::
 
 ---
 
@@ -169,112 +203,182 @@ C["☁️"] --> A
 C --> B
 ```
 
+::: footer
+:::
+
 ---
 
-- In science we are often interested in isolating the effect of a primary independent variable on a dependent variable.
-    - There are often two primary strategies we can try to do this with.
+-   In science we are often interested in isolating the effect of a primary independent variable on a dependent variable.
+    -   There are often two primary strategies we can try to do this with.
+
+::: footer
+:::
 
 ## Internal versus external validity
 
+::: footer
+:::
+
 ### Internal validity
-- Changes in your dependent variable are not caused by anything but your independent variable.
-- There is not omitted variable bias (a confounding variable you have not controlled for).
-- Often comes with experimental designs
-    - Only one thing changes in the environment, so any change that occurs in your dependent variable is likely because of what you changed in the environment.
+
+-   Changes in your dependent variable are not caused by anything but your independent variable.
+-   There is not omitted variable bias (a confounding variable you have not controlled for).
+-   Often comes with experimental designs
+    -   Only one thing changes in the environment, so any change that occurs in your dependent variable is likely because of what you changed in the environment.
+
+::: footer
+:::
 
 ### External validity
-- Changes in your dependent variable can be caused by multiple factors.
-- Beneficial in that this is more realistic.
-    - It is rarely the case that only *one* thing influences your dependent variable and only one thing changes at a time.
-- Often comes with observational designs
-    - You just observe what is happening in the world and collect data on it. Changes that occur in your outcome are not "artificial" and are happening in the real world.
 
+-   Changes in your dependent variable can be caused by multiple factors.
+-   Beneficial in that this is more realistic.
+    -   It is rarely the case that only *one* thing influences your dependent variable and only one thing changes at a time.
+-   Often comes with observational designs
+    -   You just observe what is happening in the world and collect data on it. Changes that occur in your outcome are not "artificial" and are happening in the real world.
+
+::: footer
+:::
 ---
 
-- Often times there is some trade-off between these.
-    - If we choose a design that is highly internally valid, we have less external validity. And vice versa.
+-   Often times there is some trade-off between these.
+    -   If we choose a design that is highly internally valid, we have less external validity. And vice versa.
+
+::: footer
+:::
 
 # Experiments
 
+::: footer
+:::
+
 ## How do they work?
 
-- We need to define the main independent variable of interest that we think explains our dependent variable.
+-   We need to define the main independent variable of interest that we think explains our dependent variable.
+
+::: footer
+:::
 
 ---
 
-- We can control the environment someone is in and will only allow for the independent variable to change.
-    - We often randomly assign people into different values of the independent variable
-- In the context of an experiment, this independent variable that we manipulate is called a treatment.
-- In many cases: treatment $\neq$ independent variable
-    - For example: if party identification is our treatment, we often cannot change someone's partisanship in a lab very easily! We can get close by changing motivations to rely on their partisanship, though.
-    - This is often one way that experiments are low on external validity.
-- It increases internal validity by: making sure that the only thing changing is the treatment and then looking at how the dependent variable changes as a result. It ensures that we don't all of the real world noise going on around this.
+-   We can control the environment someone is in and will only allow for the independent variable to change.
+    -   We often randomly assign people into different values of the independent variable
+-   In the context of an experiment, this independent variable that we manipulate is called a treatment.
+-   In many cases: treatment $\neq$ independent variable
+    -   For example: if party identification is our treatment, we often cannot change someone's partisanship in a lab very easily! We can get close by changing motivations to rely on their partisanship, though.
+    -   This is often one way that experiments are low on external validity.
+-   It increases internal validity by: making sure that the only thing changing is the treatment and then looking at how the dependent variable changes as a result. It ensures that we don't all of the real world noise going on around this.
+
+::: footer
+:::
 
 ## A simple example of how an experiment works
 
+::: footer
+:::
+
 ---
 
-- Participants come into a lab
-- They fill out some paperwork that ensures they know their rights and lets them know what to expect from the experience
-- Half of the participants are randomly assigned to take a sugar pill (a placebo), the second is randomly chosen to take the anti-depressant
-- Participants do not know what "treatment" they are being given. Neither do the researchers. Which "treatment condition" someone is assigned to is entirely random.
-- The researchers then document how everyone's rates of depression changes after taking one of the two pills.
+-   Participants come into a lab
+-   They fill out some paperwork that ensures they know their rights and lets them know what to expect from the experience
+-   Half of the participants are randomly assigned to take a sugar pill (a placebo), the second is randomly chosen to take the anti-depressant
+-   Participants do not know what "treatment" they are being given. Neither do the researchers. Which "treatment condition" someone is assigned to is entirely random.
+-   The researchers then document how everyone's rates of depression changes after taking one of the two pills.
+
+::: footer
+:::
 
 ## A political science example of how an experiment works
 
-- From @roberts_wolak_2022_pb.
-- A researcher wants to examine whether people are more likely to vote for younger candidates relative to older political candidates
+-   From @roberts_wolak_2022_pb.
+-   A researcher wants to examine whether people are more likely to vote for younger candidates relative to older political candidates.
+
+::: footer
+:::
 
 ---
 
-- Treatment:
-    - Placebo condition: the candidate is described as 50 years old (roughly the average age of a member of office)
-    - Young condition: the candidate is described as 25 years old
-    - Old condition: the candidate is described as 75 years old 
+-   Treatment:
+    -   Placebo condition: the candidate is described as 50 years old (roughly the average age of a member of office).
+    -   Young condition: the candidate is described as 25 years old.
+    -   Old condition: the candidate is described as 75 years old.
+
+::: footer
+:::
 
 ---
 
 ### Placebo condition
 
->Jack Milhone is running for the state legislature in 2020.  Milhone is a *50-year-old* resident of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *The average age of lawmakers in the state legislature is 52.*^[*Italics* represent what is different between conditions.]
+> Jack Milhone is running for the state legislature in 2020. Milhone is a *50-year-old* resident of Jefferson County. A graduate of Hanover College, Milhone currently works at an insurance brokerage firm. Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, "I want the people in my community to know that their voice will be heard in state government." *The average age of lawmakers in the state legislature is 52.*[^1]
+
+[^1]: *Italics* represent what is different between conditions.
+
+::: footer
+:::
 
 ---
 
 ### Young condition
 
-> Jack Milhone is running for the state legislature in 2020.  Milhone is a *23-year-old* resident of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state.Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *If elected, Milhone will be the youngest lawmaker in the state legislature.*^[*Italics* represent what is different between conditions.]
+> Jack Milhone is running for the state legislature in 2020. Milhone is a *23-year-old* resident of Jefferson County. A graduate of Hanover College, Milhone currently works at an insurance brokerage firm. Milhone describes his priorities as reforming school funding and promoting job growth in the state.Milhone says he is running for the state legislature because, "I want the people in my community to know that their voice will be heard in state government." *If elected, Milhone will be the youngest lawmaker in the state legislature.*[^2]
+
+[^2]: *Italics* represent what is different between conditions.
+
+::: footer
+:::
 
 ---
 
 ### Old condition
 
-> Jack Milhone is running for the state legislature in 2020.  Milhone is a *77-year-old resident* of Jefferson County.  A graduate of Hanover College, Milhone currently works at an insurance brokerage firm.  Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, “I want the people in my community to know that their voice will be heard in state government.” *If elected, Milhone will be the oldest lawmaker in the state legislature.*^[*Italics* represent what is different between conditions.]
+> Jack Milhone is running for the state legislature in 2020. Milhone is a *77-year-old resident* of Jefferson County. A graduate of Hanover College, Milhone currently works at an insurance brokerage firm. Milhone describes his priorities as reforming school funding and promoting job growth in the state. Milhone says he is running for the state legislature because, "I want the people in my community to know that their voice will be heard in state government." *If elected, Milhone will be the oldest lawmaker in the state legislature.*[^3]
+
+[^3]: *Italics* represent what is different between conditions.
+
+::: footer
+:::
 
 ---
 
-- People are randomly assigned to see one of these three things.
-- They only see one of them.
+-   People are randomly assigned to see one of these three things.
+-   They only see one of them.
+
+::: footer
+:::
 
 ---
 
-- They are then asked an operationalized measure of willingness to vote for the candidate:
+-   They are then asked an operationalized measure of willingness to vote for the candidate:
 
 > Imagine that you live in the state where Jack Milhone is running for state legislator. How likely is it that you would vote for him in the upcoming election? 0 Very unlikely, 100 Very likely
 
+::: footer
+:::
+
 ## Dissertation example
 
-- Experiments allow you to get really creative!
-- They aren't just used using what are called "vignettes" like the example above!
+-   Experiments allow you to get really creative!
+-   They aren't just used using what are called "vignettes" like the example above!
+
+::: footer
+:::
 
 ---
 
-- In this study, I am trying to test the following hypotheses:
-    1. People notice color
-    2. Colors shape the perceptions of candidates based on partisan perceptions.
-    3. Candidates using Red are more supported by Republicans; candidates using Blue are more supported by Democrats.
-    4. Republicans spend less time coming to evaluations of candidates using Red; Democrats spend less time evaluating candidates using Blue.
+-   In this study, I am trying to test the following hypotheses:
+    1.  People notice color
+    2.  Colors shape the perceptions of candidates based on partisan perceptions.
+    3.  Candidates using Red are more supported by Republicans; candidates using Blue are more supported by Democrats.
+    4.  Republicans spend less time coming to evaluations of candidates using Red; Democrats spend less time evaluating candidates using Blue.
+
+::: footer
+:::
 
 # References
 
-:::{#refs}
+::: {#refs}
+:::
+
+::: footer
 :::

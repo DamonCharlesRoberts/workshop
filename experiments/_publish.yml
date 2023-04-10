@@ -1,0 +1,4 @@
+- source: index.qmd
+  netlify:
+    - id: a6922f39-3a01-4784-be57-8882e52eb070
+      url: 'https://experiments.workshops.damoncroberts.com'
